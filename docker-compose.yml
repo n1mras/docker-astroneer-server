@@ -21,6 +21,8 @@ services:
      - astroneer:/astroneer
      - steamcmd:/steamcmd
      - backup:/backup
+    logging:
+      driver: journald
 
 volumes:
   astroneer:

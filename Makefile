@@ -1,6 +1,3 @@
-VERSION=SNAPSHOT
-DOCKERTAG=local/astroneer-server:$(VERSION)
-
 .PHONY: help build start stop
 
 help:
@@ -10,10 +7,10 @@ help:
 	$(info ---------------------------------------------------------)
 
 build:
-	podman build --pull --no-cache -t $(DOCKERTAG) -f Dockerfile .
+	podman-compose build 
 
 start:
-	podman-compose -f podman-compose.yml up -d
+	podman-compose up -d
 
 stop:
-	podman-compose -f podman-compose.yaml down
+	podman-compose down
