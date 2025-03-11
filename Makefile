@@ -10,7 +10,7 @@ build:
 	podman-compose build 
 
 start:
-	podman-compose up -d
+	podman-compose up
 
 stop:
 	podman-compose down
