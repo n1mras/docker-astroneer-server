@@ -1,0 +1,53 @@
+# podman-compose.yml for Podman
+# This file is configured for rootless Podman setups
+# Volumes and network configuration may differ from standard Docker setups.
+
+version: '3.1'
+
+services:
+  server:
+    image: "local/astroneer-server:latest"
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - "ASTRO_SERVER_PUBLIC_IP=${ASTRO_SERVER_PUBLIC_IP}"
+      - "ASTRO_SERVER_DOMAIN_NAME=${ASTRO_SERVER_DOMAIN_NAME}"
+      - "ASTRO_SERVER_PORT=${ASTRO_SERVER_PORT:-8777}"
+      - "ASTRO_SERVER_NAME=${ASTRO_SERVER_NAME}"
+      - "ASTRO_SERVER_PASSWORD=${ASTRO_SERVER_PASSWORD}"
+      - "ASTRO_SERVER_OWNER_NAME=${ASTRO_SERVER_OWNER_NAME}"
+    ports:
+      - ${ASTRO_SERVER_PORT:-8777}:${ASTRO_SERVER_PORT:-8777}/tcp
+      - ${ASTRO_SERVER_PORT:-8777}:${ASTRO_SERVER_PORT:-8777}/udp
+    restart: unless-stopped
+    volumes:
+      - astroneer:/astroneer
+      - steamcmd:/steamcmd
+      - backup:/backup
+    logging:
+      driver: journald
+
+volumes:
+  astroneer:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/astroneer/containers/astroneer
+      o: bind
+  steamcmd:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/astroneer/containers/steamcmd
+      o: bind
+  backup:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/astroneer/containers/backup
+      o: bind
+
+networks:
+  default:
+    driver: bridge
