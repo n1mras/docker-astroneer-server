@@ -13,6 +13,7 @@ build:
 	podman build --pull --no-cache -t $(DOCKERTAG) -f Dockerfile .
 
 start:
-	podman-compose up
+	podman-compose -f podman-compose.yml up -d
+
 stop:
-	podman-compose down
+	podman-compose -f podman-compose.yaml down
